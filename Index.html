@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Akses WiFi Terbatas - Gizkafy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Status Bar */
+        .status-bar {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #FF0000;
+            font-size: 14px;
+        }
+
+        .time {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .icons {
+            display: flex;
+            gap: 15px;
+            color: #2c3e50;
+        }
+
+        /* Main Content */
+        .content {
+            padding: 20px;
+        }
+
+        .warning-icon {
+            font-size: 70px;
+            text-align: center;
+            margin: 10px 0;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #FF0000;
+            font-size: 28px;
+            margin-bottom: 5px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(255,0,0,0.2);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 25px;
+            font-size: 16px;
+        }
+
+        /* WiFi Card */
+        .wifi-card {
+            background: linear-gradient(135deg, #FF0000 0%, #CC0000 100%);
+            border-radius: 20px;
+            padding: 25px;
+            color: white;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.4);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .wifi-icon {
+            font-size: 60px;
+            text-align: center;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+        }
+
+        .wifi-name {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .wifi-status {
+            text-align: center;
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 25px;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
+        }
+
+        .info-section {
+            background: rgba(255,255,255,0.15);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .label {
+            opacity: 0.9;
+        }
+
+        .value {
+            font-weight: 600;
+        }
+
+        .time-badge {
+            background: rgba(255, 215, 0, 0.3);
+            color: #FFD700;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .warning-message {
+            background: rgba(0, 0, 0, 0.3);
+            border-left: 4px solid #FFD700;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 15px;
+            line-height: 1.6;
+            text-align: center;
+            font-weight: 500;
+            backdrop-filter: blur(5px);
+        }
+
+        .warning-message p {
+            color: white;
+        }
+
+        .warning-message .try-again {
+            font-size: 20px;
+            font-weight: 700;
+            color: #FFD700;
+            margin-top: 5px;
+        }
+
+        /* Timer Section */
+        .timer-section {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            border: 1px dashed rgba(255,215,0,0.5);
+        }
+
+        .timer-title {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .countdown {
+            font-size: 36px;
+            font-weight: 700;
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255,215,0,0.5);
+            margin-bottom: 5px;
+        }
+
+        .timer-note {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin: 25px 0;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: #FFD700;
+            color: #CC0000;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: #FFC800;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+            border-color: #FFD700;
+        }
+
+        /* Info Tambahan */
+        .info-tambahan {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 20px;
+            border-left: 4px solid #FF0000;
+        }
+
+        .info-tambahan p {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #2c3e50;
+        }
+
+        .info-tambahan .highlight {
+            color: #FF0000;
+            font-weight: 600;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 300px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+            border-top: 5px solid #FF0000;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #7f8c8d;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #FF0000;
+        }
+
+        .modal-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .modal h2 {
+            color: #FF0000;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .modal p {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        /* Ripple Effect */
+        .btn, .offer-card {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple-animation 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,0,0,0.3);
+            border-radius: 50%;
+            border-top-color: #FF0000;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 20px;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .countdown {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            
+            <div class="icons">
+                <span class="signal">📶</span>
+                
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <div class="warning-icon">⏰</div>
+            <h1>Waktu Habis!</h1>
+            <p class="subtitle">Akses WiFi telah melebihi batas waktu gizka wifi menghimbau untuk mencoba besok pagi</p>
+            
+            <!-- WiFi Card -->
+            <div class="wifi-card">
+                <div class="wifi-icon">📶 WiFi</div>
+                <div class="wifi-name">Gizkha Wifi 5G</div>
+                <div class="wifi-status">⛔ Tidak Tersedia</div>
+                
+                <div class="info-section">
+                    <div class="info-row">
+                        <span class="label">Waktu Pemakaian</span>
+                        <span class="value">16 jam</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Batas Maksimal</span>
+                        <span class="value">16 jam</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="label">Status</span>
+                        <span class="value time-badge">TERPAKAI HABIS</span>
+                    </div>
+                </div>
+
+                <!-- Warning Message -->
+                <div class="warning-message">
+                    <p>⏳ Anda sudah mencapai batas waktu akses penggunaan wifi</p>
+                    <p class="try-again">🔄 Coba Lagi Besok!</p>
+                </div>
+
+                <!-- Timer Section -->
+                <div class="timer-section">
+                    <div class="timer-title">Waktu tunggu hingga akses berikutnya</div>
+                    <div class="countdown" id="countdown">05:45:01</div>
+                    <div class="timer-note">Akses berikutnya tersedia besok pukul 03:00</div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="showPopup('wifi')">CEK JADWAL</button>
+                    <button class="btn btn-secondary" onclick="showPopup('info')">INFO</button>
+                </div>
+
+                <!-- Info Tambahan -->
+                <div class="info-tambahan">
+                    <p><span class="highlight">📅 Hari ini:</span>  Waktu habis</p>
+                    <p><span class="highlight">⏰ Batas harian:</span> waktu habis !</p>
+                    <p><span class="highlight">🔄 Reset:</span> Setiap hari pukul 03:00</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Popup Modal -->
+        <div class="modal" id="popupModal">
+            <div class="modal-content">
+                <span class="close" onclick="closePopup()">&times;</span>
+                <div class="modal-icon">📶</div>
+                <h2 id="modalTitle">Informasi WiFi</h2>
+                <p id="modalMessage">Wifi tidak dapat memuat. Silakan coba lagi besok setelah pukul 21.00.</p>
+                <p class="small-text">Batas waktu dari jam 05.00 - 21.15 per hari</p>
+                <button class="btn btn-primary" onclick="closePopup()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to show popup modal with different messages
+        function showPopup(type) {
+            const modal = document.getElementById('popupModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            
+            if (type === 'wifi') {
+                modalTitle.textContent = 'Jadwal WiFi';
+                modalMessage.textContent = 'Akses WiFi berikutnya tersedia besok pukul 00:00 WIB. Saat ini Anda sudah mencapai batas 60 menit harian.';
+            } else {
+                modalTitle.textContent = 'Informasi WiFi';
+                modalMessage.textContent = 'Layanan WiFi Telkomsel memiliki batas waktu 60 menit per hari. Setelah mencapai batas, Anda harus menunggu hingga hari berikutnya.';
+            }
+            
+            modal.style.display = 'flex';
+            
+            // Add animation to the button that was clicked
+            const activeElement = document.activeElement;
+            if (activeElement && activeElement.classList.contains('btn')) {
+                activeElement.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    activeElement.style.transform = 'scale(1)';
+                }, 200);
+            }
+        }
+
+        // Function to close popup modal
+        function closePopup() {
+            const modal = document.getElementById('popupModal');
+            modal.style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('popupModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Update time in status bar
+        function updateTime() {
+            const timeElement = document.querySelector('.time');
+            if (timeElement) {
+                const now = new Date();
+                const hours = now.getHours().toString().padStart(2, '0');
+                const minutes = now.getMinutes().toString().padStart(2, '0');
+                timeElement.textContent = `${hours}:${minutes}`;
+            }
+        }
+
+        // Update countdown to next day
+        function updateCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            if (!countdownElement) return;
+            
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            
+            const diff = tomorrow - now;
+            
+            if (diff > 0) {
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                countdownElement.textContent = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            } else {
+                countdownElement.textContent = '00:00:00';
+            }
+        }
+
+        // Add ripple effect to buttons
+        function addRippleEffect() {
+            const buttons = document.querySelectorAll('.btn');
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('ripple');
+                    
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        }
+
+        // Add loading state to buttons
+        function addLoadingState() {
+            const buttons = document.querySelectorAll('.btn-primary');
+            
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const originalText = this.textContent;
+                    this.innerHTML = '<span class="loading"></span>';
+                    this.disabled = true;
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.disabled = false;
+                    }, 1000);
+                });
+            });
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update time
+            updateTime();
+            setInterval(updateTime, 1000);
+            
+            // Update countdown
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            
+            // Add ripple effect
+            addRippleEffect();
+            
+            // Add loading state to buttons
+            addLoadingState();
+            
+            // Add haptic feedback simulation (for mobile)
+            if ('vibrate' in navigator) {
+                const buttons = document.querySelectorAll('.btn');
+                buttons.forEach(button => {
+                    button.addEventListener('click', () => {
+     
